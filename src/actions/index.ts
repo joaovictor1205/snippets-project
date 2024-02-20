@@ -21,9 +21,11 @@ export async function deleteSnippet(id: number) {
 };
 
 export async function createSnippet(formState: { message: string }, formData: FormData) {
-  const title = formData.get("title") as string;
-  const code = formData.get("code") as string;
+  const title = formData.get("title");
+  const code = formData.get("code");
 
+  if (typeof title !== "string" || title.length < 3) return { message: "Title must be longer" }
+  if (typeof code !== "string" || code.length < 3) return { message: "Code must be longer" }
   if (!title) return { message: "Title is required" };
 
   const snippet = await db.snippet.create({
